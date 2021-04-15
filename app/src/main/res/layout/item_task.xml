@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="52dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textSize="25sp"
+            tools:text="Task" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/txtCompletionDate"
+            android:layout_alignTop="@+id/txtTitle"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="-18dp" />
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtTitle"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textSize="18sp"
+            android:visibility="gone"
+            tools:text="Description" />
+
+
+        <TextView
+            android:id="@+id/txtCompletionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDescription"
+            tools:text="Done On: " />
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/checkbox"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_delete" />
+
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
