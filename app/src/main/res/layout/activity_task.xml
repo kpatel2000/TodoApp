@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        tools:hint="Title" />
+        android:hint="@string/title" />
 
     <TextView
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:id="@+id/edtDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:hint="Description(Optional)" />
+        android:hint="@string/description" />
 
     <TextView
 

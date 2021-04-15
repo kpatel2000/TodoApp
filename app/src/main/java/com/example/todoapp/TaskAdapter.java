@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,14 +16,15 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private Context context;
+    private final Context context;
+    public int completedTasks = 0;
     deleteTask deleteTask;
 
     TaskAdapter(Context context) {
         this.context = context;
     }
 
-    private List<Task> allTasks = new ArrayList<Task>();
+    public List<Task> allTasks = new ArrayList<>();
 
     @NonNull
     @Override
@@ -39,29 +39,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task currentTask = allTasks.get(position);
         holder.txtTitle.setText(currentTask.title);
         if (currentTask.getDescription() == null) {
-
+            holder.txtDescription.setVisibility(View.GONE);
         } else {
             holder.txtDescription.setVisibility(View.VISIBLE);
             holder.txtDescription.setText(currentTask.description);
         }
 
         holder.txtDoneOn.setText("Task Date: " + currentTask.date);
+
         if (holder.checkBox.isChecked()) {
+            completedTasks--;
             holder.checkBox.setChecked(false);
         }
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                deleteTask = (deleteTask) context;
-                deleteTask.delete(currentTask);
-            }
+        holder.checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            completedTasks++;
+            deleteTask = (deleteTask) context;
+            deleteTask.delete(currentTask);
         });
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteTask = (deleteTask) context;
-                deleteTask.delete(currentTask);
-            }
+        holder.delete.setOnClickListener(view -> {
+            deleteTask = (deleteTask) context;
+            deleteTask.delete(currentTask);
         });
     }
 
@@ -77,11 +74,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return allTasks.size();
     }
 
-    class TaskViewHolder extends RecyclerView.ViewHolder {
+    static class TaskViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtTitle, txtDescription, txtDoneOn;
-        private CheckBox checkBox;
-        private ImageView delete;
+        private final TextView txtTitle;
+        private final TextView txtDescription;
+        private final TextView txtDoneOn;
+        private final CheckBox checkBox;
+        private final ImageView delete;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);

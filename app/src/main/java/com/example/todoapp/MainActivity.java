@@ -6,12 +6,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,12 +21,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements deleteTask {
 
-    private FloatingActionButton fab;
-    private RecyclerView recyclerView;
-    private TextView txtNoTask;
     private TaskAdapter adapter;
-    int completedTask = 0;
     private TaskViewModel taskViewModel;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +31,9 @@ public class MainActivity extends AppCompatActivity implements deleteTask {
         setContentView(R.layout.activity_main);
 
 
-        fab = findViewById(R.id.fab);
-        recyclerView = findViewById(R.id.recyclerView);
-        adapter = new TaskAdapter(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        FloatingActionButton fab = findViewById(R.id.fab);
+
+        initRecyclerView();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements deleteTask {
             adapter.updateTask((ArrayList<Task>) tasks);
         });
 
+    }
+
+    public void initRecyclerView(){
+        recyclerView = findViewById(R.id.recyclerView);
+        adapter = new TaskAdapter(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -80,24 +82,21 @@ public class MainActivity extends AppCompatActivity implements deleteTask {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.analysis:
-                Intent intent = new Intent(MainActivity.this, AnalysisActivity.class);
-                int pendingTask = adapter.getItemCount();
-                intent.putExtra("CompletedTask", completedTask);
-                intent.putExtra("PendingTask", pendingTask);
-                startActivity(intent);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.analysis) {
+            Intent intent = new Intent(MainActivity.this, AnalysisActivity.class);
+            int pendingTask = adapter.getItemCount();
+            int completedTask = adapter.completedTasks;
+            intent.putExtra("CompletedTask", completedTask);
+            intent.putExtra("PendingTask", pendingTask);
+            startActivity(intent);
+            return true;
         }
-
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void delete(Task task) {
-        completedTask++;
         taskViewModel.delete(task);
     }
+
 }
