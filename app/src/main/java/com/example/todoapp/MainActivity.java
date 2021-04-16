@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements deleteTask {
 
     private TaskAdapter adapter;
     private TaskViewModel taskViewModel;
+    private TextView txtAddTask;
     RecyclerView recyclerView;
 
     @Override
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements deleteTask {
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
-
+        txtAddTask = findViewById(R.id.txtAddTask);
         initRecyclerView();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +47,14 @@ public class MainActivity extends AppCompatActivity implements deleteTask {
         taskViewModel = new ViewModelProvider(MainActivity.this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(TaskViewModel.class);
         taskViewModel.getAllTasks().observe(MainActivity.this, tasks -> {
             adapter.updateTask((ArrayList<Task>) tasks);
+
+            if (adapter.getItemCount() != 0){
+                recyclerView.setVisibility(View.VISIBLE);
+                txtAddTask.setVisibility(View.GONE);
+            }else{
+                recyclerView.setVisibility(View.GONE);
+                txtAddTask.setVisibility(View.VISIBLE);
+            }
         });
 
     }

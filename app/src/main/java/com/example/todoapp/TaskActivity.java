@@ -35,6 +35,7 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
             public void onClick(View view) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(TaskActivity.this, TaskActivity.this, Calendar.getInstance().get(Calendar.YEAR),
                         Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             }
         });
